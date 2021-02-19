@@ -1,0 +1,1 @@
+locust -H http://localhost:46801 --headless -f app/OnceUser.py --users 2 -r 2 --run-time 1m --only-summary
