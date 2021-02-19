@@ -1,7 +1,6 @@
 FROM docker.io/locustio/locust:1.1
 #ENV PATH="/home/locust/.local/bin:${PATH}"
 USER root
-RUN whoami
 RUN apt-get update -y
 RUN apt-get install telnet -y
 RUN apt-get install vim -y
