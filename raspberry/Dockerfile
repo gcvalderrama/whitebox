@@ -12,7 +12,6 @@ RUN pip3 install -r requirements.txt
 RUN mkdir /app
 RUN chmod 777 /app
 USER locust
-RUN whoami
 RUN ls -l
 # RUN python -c "import sys; print(sys.path)"
 
