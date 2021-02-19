@@ -22,7 +22,7 @@ spec:
         - name: common-storage
           mountPath: /reports
     - name: performance
-      image: docker.io/katarilab/locust-raspberry:latest
+      image: f4phantom.skylab:5000/whitebox:latest
       imagePullPolicy: Always
       command: ["/bin/sh"]
       args: ["-c", "locust && cp /app/report_failures.csv /reports && cp /app/report_stats.csv /reports && cp /app/report_stats_history.csv /reports"]
