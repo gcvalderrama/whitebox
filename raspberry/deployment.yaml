@@ -1,0 +1,67 @@
+# requirements sut-service.sut 48100
+# requirements sut-deployment.sut
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-coldstart
+  namespace: trial
+  labels:
+    key: pod-coldstart
+spec:
+  restartPolicy: Never
+  terminationGracePeriodSeconds: 10
+  volumes:
+    - name: common-storage
+      emptyDir: {}
+  nodeSelector:
+        archtype: arm64
+  containers:      
+    - name: sidecar
+      image: nginx
+      volumeMounts:
+        - name: common-storage
+          mountPath: /reports
+    - name: performance
+      image: f4phantom.skylab:5000/whitebox-rb:latest
+      imagePullPolicy: Always
+      command: ["/bin/sh"]
+      args: ["-c", "locust && cp /app/report_failures.csv /reports && cp /app/report_stats.csv /reports && cp /app/report_stats_history.csv /reports"]
+      volumeMounts:
+        - name: common-storage
+          mountPath: /reports
+      ports:
+        - containerPort: 8089
+          name: web
+        - containerPort: 5557
+          name: cluster
+        - containerPort: 5558
+          name: communication
+      env:
+        - name: "LOCUST_LOCUSTFILE"
+          value: "/app/OnceUser.py"
+        - name: "LOCUST_HOST"
+          value: "http://localhost:80"
+        - name: "LOCUST_USERS"
+          value: "2"
+        - name: "LOCUST_HATCH_RATE"
+          value: "2"
+        - name: "LOCUST_MODE_MASTER"
+          value: "false"
+        - name: "LOCUST_CSV"
+          value: "report"
+        - name: "LOCUST_HEADLESS"
+          value: "true"        
+        - name: "LOCUST_RUN_TIME"
+          value: "1m"
+        - name: "PYTHONPATH"
+          value: "/app"
+        - name: "LOCUST_EXIT_CODE_ON_ERROR"
+          value: "0"
+        - name: "LOCUST_LOGFILE"
+          value: "/reports/locust.log"
+
+
+
+
+
+
