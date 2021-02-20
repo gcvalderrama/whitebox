@@ -1,4 +1,4 @@
-FROM docker.io/katarilab/locust-rb:latest
+FROM docker.io/katarilab/locust-raspberry:latest
 #ENV PATH="/home/locust/.local/bin:${PATH}"
 USER root
 RUN whoami
