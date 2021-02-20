@@ -9,12 +9,10 @@ metadata:
     key: pod-coldstart
 spec:
   restartPolicy: Never
-  terminationGracePeriodSeconds: 10
+  terminationGracePeriodSeconds: 50
   volumes:
     - name: common-storage
-      emptyDir: {}
-  nodeSelector:
-        archtype: arm64
+      emptyDir: {}  
   containers:      
     - name: sidecar
       image: nginx
@@ -25,7 +23,7 @@ spec:
       image: f4phantom.skylab:5000/whitebox:latest
       imagePullPolicy: Always
       command: ["/bin/sh"]
-      args: ["-c", "locust && cp /app/report_failures.csv /reports && cp /app/report_stats.csv /reports && cp /app/report_stats_history.csv /reports"]
+      args: ["-c", "locust && cp /target/app/report_failures.csv /reports && cp /target/app/report_stats.csv /reports && cp /target/app/report_stats_history.csv /reports"]
       volumeMounts:
         - name: common-storage
           mountPath: /reports
@@ -38,7 +36,7 @@ spec:
           name: communication
       env:
         - name: "LOCUST_LOCUSTFILE"
-          value: "/app/OnceUser.py"
+          value: "/target/app/OnceUser.py"
         - name: "LOCUST_HOST"
           value: "http://localhost:80"
         - name: "LOCUST_USERS"
@@ -54,7 +52,7 @@ spec:
         - name: "LOCUST_RUN_TIME"
           value: "1m"
         - name: "PYTHONPATH"
-          value: "/app"
+          value: "/target"
         - name: "LOCUST_EXIT_CODE_ON_ERROR"
           value: "0"
         - name: "LOCUST_LOGFILE"

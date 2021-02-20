@@ -1,6 +1,7 @@
 FROM docker.io/katarilab/locust-rb:latest
 #ENV PATH="/home/locust/.local/bin:${PATH}"
 USER root
+RUN whoami
 RUN apt-get update -y
 RUN apt-get install telnet -y
 RUN apt-get install vim -y
@@ -9,9 +10,8 @@ COPY ./requirements.txt .
 RUN python3 -m pip install --upgrade pip
 RUN pip3 install -r requirements.txt
 RUN mkdir /app
+COPY ./app /app
 RUN chmod 777 /app
 USER locust
-RUN ls -l
-# RUN python -c "import sys; print(sys.path)"
-
-
+RUN whoami
+RUN ls -l /app
