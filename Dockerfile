@@ -10,6 +10,8 @@ RUN python3 -m pip install --upgrade pip
 RUN pip3 install -r requirements.txt
 RUN mkdir /target
 RUN mkdir /target/app
+RUN mkdir /reports
+RUN chmod 777 /reports
 RUN chmod 777 /target/app
 USER locust
 RUN whoami
