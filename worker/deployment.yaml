@@ -9,7 +9,7 @@ metadata:
     key: pod-coldstart
 spec:
   restartPolicy: Never
-  terminationGracePeriodSeconds: 50
+  terminationGracePeriodSeconds: 60
   volumes:
     - name: common-storage
       emptyDir: {}  
