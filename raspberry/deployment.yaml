@@ -38,13 +38,13 @@ spec:
           name: communication
       env:
         - name: "LOCUST_LOCUSTFILE"
-          value: "/target/app/OnceUser.py"
+          value: "{{case}}"
         - name: "LOCUST_HOST"
-          value: "http://localhost:80"
+          value: "{{host}}"        
         - name: "LOCUST_USERS"
-          value: "2"
+          value: "{{users}}"
         - name: "LOCUST_HATCH_RATE"
-          value: "2"
+          value: "{{rate}}"
         - name: "LOCUST_MODE_MASTER"
           value: "false"
         - name: "LOCUST_CSV"
@@ -52,13 +52,15 @@ spec:
         - name: "LOCUST_HEADLESS"
           value: "true"        
         - name: "LOCUST_RUN_TIME"
-          value: "1m"
+          value: "{{run_time}}"
         - name: "PYTHONPATH"
           value: "/target"
         - name: "LOCUST_EXIT_CODE_ON_ERROR"
           value: "0"
         - name: "LOCUST_LOGFILE"
           value: "/reports/locust.log"
+        - name: "VERB"
+          value: "{{verb}}"
 
 
 

@@ -1,18 +1,16 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-test  
+  name: pod-single-test  
   labels:
-    key: pod-test
+    key: pod-single-test
 spec:
   restartPolicy: Never
-  terminationGracePeriodSeconds: 10
+  terminationGracePeriodSeconds: 1
   containers:      
     - name: performance
       image: f4phantom.skylab:5000/whitebox:latest
-      imagePullPolicy: Always
-      command: ["/bin/sh"]
-      args: ["-c", "locust && cp /target/app/report_failures.csv /reports && cp /target/app/report_stats.csv /reports && cp /target/app/report_stats_history.csv /reports"]
+      imagePullPolicy: Always      
       ports:
         - containerPort: 8089
           name: web
@@ -23,25 +21,26 @@ spec:
       env:
         - name: "LOCUST_LOCUSTFILE"
           value: "__case__"
+        - name: "VERB"
+          value: "__verb__"
+        - name: "USER_AGENT"
+          value: "__agent__"          
         - name: "LOCUST_HOST"
-          value: "__host__"        
+          value: "http://localhost"        
         - name: "LOCUST_USERS"
-          value: "__users__"
+          value: "10"
         - name: "LOCUST_HATCH_RATE"
-          value: "__rate__"
+          value: "5"
         - name: "LOCUST_MODE_MASTER"
           value: "false"
         - name: "LOCUST_CSV"
           value: "report"
         - name: "LOCUST_HEADLESS"
-          value: "true"        
-        - name: "LOCUST_RUN_TIME"
-          value: "__run_time__"
+          value: "false"                
         - name: "PYTHONPATH"
           value: "/target"
         - name: "LOCUST_EXIT_CODE_ON_ERROR"
           value: "0"
         - name: "LOCUST_LOGFILE"
           value: "/reports/locust.log"
-        - name: "VERB"
-          value: "__verb__"
+        

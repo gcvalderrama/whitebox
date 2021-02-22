@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-ftp  
+  labels:
+    key: pod-ftp
+spec:
+  restartPolicy: Never    
+  nodeSelector:
+      archtype: x64
+  containers:          
+    - name: performance
+      image: delfer/alpine-ftp-server:latest
+      imagePullPolicy: IfNotPresent      
+      ports:
+        - containerPort: 21
+          name: ftp        
+      env:
+        - name: "USERS"
+          value: "trial|1234|/home/tests"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ftp-service  
+spec:  
+  type: NodePort
+  selector:
+    key: pod-ftp
+  ports:
+    - name: service
+      protocol: TCP
+      port: 21
+      targetPort: 21

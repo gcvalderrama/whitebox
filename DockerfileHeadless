@@ -11,14 +11,29 @@ RUN pip3 install -r requirements.txt
 RUN mkdir /target
 RUN mkdir /target/app
 RUN mkdir /reports
+
+WORKDIR /target/app
+COPY ./app .
+
+RUN chown -R locust /target
+RUN chown -R locust /target/app
+RUN chown -R locust /reports
+
 RUN chmod 777 /reports
 RUN chmod 777 /target/app
+
+RUN ls -ll /target
+RUN ls -ll /target/app
+
 USER locust
 RUN whoami
 WORKDIR /target/app
-COPY ./app .
-RUN ls -l /target/app
+RUN ls -ll /target
+RUN ls -ll /target/app
 # RUN python -c "import sys; print(sys.path)"
 
+WORKDIR /target
+ENV PYTHONPATH=.
+ENTRYPOINT ["python3", "./app/startup.py"]
 
 

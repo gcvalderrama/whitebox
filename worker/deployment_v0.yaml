@@ -1,18 +1,32 @@
+# requirements sut-service.sut 48100
+# requirements sut-deployment.sut
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-test  
+  name: pod-test
+  namespace: trial
   labels:
     key: pod-test
 spec:
   restartPolicy: Never
-  terminationGracePeriodSeconds: 10
+  terminationGracePeriodSeconds: 60
+  volumes:
+    - name: common-storage
+      emptyDir: {}  
   containers:      
+    - name: sidecar
+      image: nginx
+      volumeMounts:
+        - name: common-storage
+          mountPath: /reports
     - name: performance
       image: f4phantom.skylab:5000/whitebox:latest
       imagePullPolicy: Always
       command: ["/bin/sh"]
       args: ["-c", "locust && cp /target/app/report_failures.csv /reports && cp /target/app/report_stats.csv /reports && cp /target/app/report_stats_history.csv /reports"]
+      volumeMounts:
+        - name: common-storage
+          mountPath: /reports
       ports:
         - containerPort: 8089
           name: web
@@ -45,3 +59,7 @@ spec:
           value: "/reports/locust.log"
         - name: "VERB"
           value: "__verb__"
+
+
+
+
