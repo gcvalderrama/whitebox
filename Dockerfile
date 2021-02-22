@@ -1,9 +1,6 @@
 FROM docker.io/locustio/locust:1.4.3
 #ENV PATH="/home/locust/.local/bin:${PATH}"
 USER root
-RUN apt-get update -y
-RUN apt-get install telnet -y
-RUN apt-get install vim -y
 RUN cd ~
 COPY ./requirements.txt .
 RUN python3 -m pip install --upgrade pip

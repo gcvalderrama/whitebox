@@ -14,6 +14,9 @@ import logging
 import sys
 
 
+
+
+
 TARGET_APP_DIR = os.getenv('TARGET_DIR' , './app')
 LOCUST_RUN_TIME = os.getenv('LOCUST_RUN_TIME' , 20)
 LOCUST_USER_COUNT = os.getenv('LOCUST_USER_COUNT' , 10)
