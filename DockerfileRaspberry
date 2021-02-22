@@ -10,8 +10,7 @@ RUN mkdir /target/app
 RUN mkdir /reports
 RUN chmod 777 /reports
 RUN chmod 777 /target/app
-USER locust
-RUN whoami
+USER root
 WORKDIR /target/app
 COPY ./app .
 RUN ls -l /target/app
