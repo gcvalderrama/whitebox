@@ -7,9 +7,11 @@ metadata:
 spec:
   restartPolicy: Never
   terminationGracePeriodSeconds: 1
+  nodeSelector:
+      archtype: arm64
   containers:      
     - name: performance
-      image: f4phantom.skylab:5000/whitebox:latest
+      image: f4phantom.skylab:5000/whitebox-rb:latest
       imagePullPolicy: Always      
       ports:
         - containerPort: 8089
