@@ -22,11 +22,11 @@ spec:
           name: communication
       env:
         - name: "LOCUST_LOCUSTFILE"
-          value: "__case__"
+          value: "/target/app/OnceUser.py"
         - name: "VERB"
-          value: "__verb__"
+          value: "GET"
         - name: "USER_AGENT"
-          value: "__agent__"          
+          value: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Safari/537.36"          
         - name: "LOCUST_HOST"
           value: "http://localhost"        
         - name: "LOCUST_USERS"

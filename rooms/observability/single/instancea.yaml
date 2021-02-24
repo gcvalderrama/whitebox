@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-single-test  
+  name: pod-single-testc  
   labels:
-    key: pod-single-test
+    key: pod-single-testc
 spec:
   restartPolicy: Never
   terminationGracePeriodSeconds: 1
   nodeSelector:
-      archtype: x64
+      archtype: arm64
   containers:      
     - name: performance
-      image: f4phantom.skylab:5000/whitebox:latest
+      image: registry:2
       imagePullPolicy: Always      
       ports:
         - containerPort: 8089
@@ -22,11 +22,11 @@ spec:
           name: communication
       env:
         - name: "LOCUST_LOCUSTFILE"
-          value: "__case__"
+          value: "/target/app/OnceUser.py"
         - name: "VERB"
-          value: "__verb__"
+          value: "GET"
         - name: "USER_AGENT"
-          value: "__agent__"          
+          value: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Safari/537.36"          
         - name: "LOCUST_HOST"
           value: "http://localhost"        
         - name: "LOCUST_USERS"
