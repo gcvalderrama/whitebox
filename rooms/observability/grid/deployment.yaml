@@ -1,17 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:    
+    tier: observability
+  name: pod-grid-node-deployment  
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      key: pod-grid-node
+  template:
+    metadata:
+      labels:
+        key: pod-grid-node
+    spec:                  
+      nodeSelector:
+        archtype: arm64      
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "key"
+                    operator: In
+                    values:
+                    - pod-grid-node
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: container-grid-node       
+          image: k8smaster:5000/whitebox-rb:latest
+          imagePullPolicy: Always       
+          ports:
+            - containerPort: 8089
+              name: web
+            - containerPort: 5557
+              name: cluster
+            - containerPort: 5558
+              name: communication                  
+          envFrom:
+            - configMapRef:
+                name: test-node-config                                   
+
+---
+
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-single-test  
+  name: pod-master-test  
   labels:
-    key: pod-single-test
+    key: pod-master-test
 spec:
   restartPolicy: Never
   terminationGracePeriodSeconds: 1
   nodeSelector:
-      archtype: arm64
+      archtype: x64
   containers:      
     - name: performance
-      image: f4phantom.skylab:5000/whitebox-rb:latest
+      image: k8smaster:5000/whitebox:latest
       imagePullPolicy: Always      
       ports:
         - containerPort: 8089
@@ -20,29 +65,30 @@ spec:
           name: cluster
         - containerPort: 5558
           name: communication
-      env:
-        - name: "LOCUST_LOCUSTFILE"
-          value: "__case__"
-        - name: "VERB"
-          value: "__verb__"
-        - name: "USER_AGENT"
-          value: "__agent__"          
-        - name: "LOCUST_HOST"
-          value: "http://localhost"        
-        - name: "LOCUST_USERS"
-          value: "10"
-        - name: "LOCUST_HATCH_RATE"
-          value: "5"
-        - name: "LOCUST_MODE_MASTER"
-          value: "false"
-        - name: "LOCUST_CSV"
-          value: "report"
-        - name: "LOCUST_HEADLESS"
-          value: "false"                
-        - name: "PYTHONPATH"
-          value: "/target"
-        - name: "LOCUST_EXIT_CODE_ON_ERROR"
-          value: "0"
-        - name: "LOCUST_LOGFILE"
-          value: "/reports/locust.log"
-        
+      envFrom:
+        - configMapRef:
+            name: test-master-config                                   
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-grid-master  
+spec:  
+  type: ClusterIP
+  selector:
+    key: pod-master-test  
+  ports:
+    - name: master
+      protocol: TCP      
+      port: 48100
+      targetPort: 8089
+    - name: cluster
+      protocol: TCP      
+      port: 5557
+      targetPort: 5557
+    - port: 5558
+      protocol: TCP      
+      name: communication
+      targetPort: 5558

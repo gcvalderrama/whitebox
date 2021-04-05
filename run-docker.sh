@@ -4,13 +4,12 @@
 
 sudo docker run -it --rm \
  -e "LOCUST_LOCUSTFILE=/target/app/OnceUser.py" \
- -p 8090:8089 \
- -e "LOCUST_HOST=https://www.google.com" \
+ -e "LOCUST_HOST=http://192.168.18.16:8080/Traffic" \
  -e "LOCUST_USERS=2" \
  -e "LOCUST_HATCH_RATE=5" \
- -e "VERB=GET" \
+ -e "VERB=POST" \
  -e "USER_AGENT=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Safari/537.36" \
- -p 8089:8089 whitebox 
+ -p 8092:8089 whitebox 
 
 exit 0
 

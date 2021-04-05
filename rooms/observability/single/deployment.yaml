@@ -20,29 +20,6 @@ spec:
           name: cluster
         - containerPort: 5558
           name: communication
-      env:
-        - name: "LOCUST_LOCUSTFILE"
-          value: "__case__"
-        - name: "VERB"
-          value: "__verb__"
-        - name: "USER_AGENT"
-          value: "__agent__"          
-        - name: "LOCUST_HOST"
-          value: "http://localhost"        
-        - name: "LOCUST_USERS"
-          value: "10"
-        - name: "LOCUST_HATCH_RATE"
-          value: "5"
-        - name: "LOCUST_MODE_MASTER"
-          value: "false"
-        - name: "LOCUST_CSV"
-          value: "report"
-        - name: "LOCUST_HEADLESS"
-          value: "false"                
-        - name: "PYTHONPATH"
-          value: "/target"
-        - name: "LOCUST_EXIT_CODE_ON_ERROR"
-          value: "0"
-        - name: "LOCUST_LOGFILE"
-          value: "/reports/locust.log"
-        
+      envFrom:
+        - configMapRef:
+            name: test-config                                   

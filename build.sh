@@ -1,5 +1,5 @@
 
-rm -R app/*.csv
+# rm -R app/*.csv
 
 sudo docker build -t whitebox:latest --no-cache -f Dockerfile . 
 sudo docker build -t whitebox-headless:latest --no-cache -f DockerfileHeadless . 
